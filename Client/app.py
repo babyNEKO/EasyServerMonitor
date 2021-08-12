@@ -6,8 +6,8 @@ ESM_Client = Flask(__name__)
 
 
 @ESM_Client.route('/')
-def hello_world():
-    return 'Hello World!'
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
