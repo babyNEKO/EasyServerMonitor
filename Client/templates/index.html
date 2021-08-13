@@ -11,12 +11,42 @@
 </head>
 <body>
     <div>
-        <h1>Easy Server Monitor Client</h1>
+        <h1 onclick="goGitHub()">Easy Server Monitor Client</h1>
         <hr>
     </div>
 
-    <div>
+    <div id="CPU">
+        <p style="font-weight: bold; color: green">-- CPU --</p>
+        <ul>
+            <li>{{ 'CPU内核：' ~ cpu_info.CPU_core }}</li>
+            <li>{{ 'CPU逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
+        </ul>
+    </div>
+
+    <div id="RAM">
+        <p style="font-weight: bold; color: green">-- RAM --</p>
+        <ul>
+            <li>{{ 'Total ' ~ ram_info.RAM_total ~ ' MB' }}</li>
+            <li>{{ 'Available ' ~ ram_info.RAM_available ~ ' MB' }}</li>
+            <li>{{ 'Used ' ~ ram_info.RAM_used ~ ' MB' }}</li>
+            <li>{{ 'Free ' ~ ram_info.RAM_free ~ ' MB' }}</li>
+            <li>{{ 'Percent ' ~ ram_info.RAM_percent ~ ' %' }}</li>
+        </ul>
+    </div>
+
+    <div id="DISK">
+        <p style="font-weight: bold; color: green">-- DISK --</p>
 
     </div>
+
+    <div id="NETWORK">
+        <p style="font-weight: bold; color: green">-- NETWORK --</p>
+
+    </div>
+    <script>
+        function goGitHub() {
+            window.location.href='https://github.com/babyNEKO/EasyServerMonitor';
+        }
+    </script>
 </body>
 </html>
