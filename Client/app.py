@@ -29,5 +29,3 @@ def get_all_info():
 if __name__ == '__main__':
     ESM_Client.run()
 
-# doc:
-# https://psutil.readthedocs.io/en/latest/
