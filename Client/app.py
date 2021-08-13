@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from ESM_Plugin.HostStatus import cpu_info, memory_info, disk_info
+from ESM_Plugin.HostStatus import cpu_info, memory_info, disk_info, system_info, network_info
 from ESM_Plugin import SendStatus
 
 ESM_Client = Flask(__name__)
@@ -11,7 +11,9 @@ def index():
         'index.html',
         cpu_info=cpu_info(),
         ram_info=memory_info(),
-        disk_info=disk_info()
+        disk_info=disk_info(),
+        system_info=system_info(),
+        network_info=network_info()
     )
 
 

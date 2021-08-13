@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <title>~ ESM Client</title>
@@ -7,42 +8,68 @@
         h1{
             font-style: italic;
         }
+        #SYS p, #CPU p, #RAM p, #DISK p, #NETWORK p{
+            font-weight: bold;
+            color: green;
+        }
     </style>
 </head>
+
 <body>
     <div>
         <h1 onclick="goGitHub()">Easy Server Monitor Client</h1>
         <hr>
     </div>
 
-    <div id="CPU">
-        <p style="font-weight: bold; color: green">-- CPU --</p>
+    <div id="SYS">
+        <p>-- SYSTEM --</p>
         <ul>
-            <li>{{ 'CPU内核：' ~ cpu_info.CPU_core }}</li>
-            <li>{{ 'CPU逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
+            <li>{{ 'Boot Time ' ~ system_info.boot_time }}</li>
+        </ul>
+    </div>
+
+    <div id="CPU">
+        <p>-- CPU --</p>
+        <ul>
+            <li>{{ '内核：' ~ cpu_info.CPU_core }} | {{ '逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
+            <li>{{ 'CPU Load ' ~ cpu_info.CPU_load }}</li>
         </ul>
     </div>
 
     <div id="RAM">
-        <p style="font-weight: bold; color: green">-- RAM --</p>
+        <p>-- RAM --</p>
         <ul>
             <li>{{ 'Total ' ~ ram_info.RAM_total ~ ' MB' }}</li>
-            <li>{{ 'Available ' ~ ram_info.RAM_available ~ ' MB' }}</li>
             <li>{{ 'Used ' ~ ram_info.RAM_used ~ ' MB' }}</li>
             <li>{{ 'Free ' ~ ram_info.RAM_free ~ ' MB' }}</li>
+            <li>{{ 'Available ' ~ ram_info.RAM_available ~ ' MB' }}</li>
             <li>{{ 'Percent ' ~ ram_info.RAM_percent ~ ' %' }}</li>
         </ul>
     </div>
 
     <div id="DISK">
-        <p style="font-weight: bold; color: green">-- DISK --</p>
-
+        <p>-- DISK --</p>
+        <ul>
+            {% for i in disk_info %}
+                <li>磁盘：{{ i.device }}</li>
+                <li style="margin-left: 14px; list-style: circle">挂载点：{{ i.mnt }}</li>
+                <li style="margin-left: 14px; list-style: circle">文件系统：{{ i.fstype }}</li>
+                <li style="margin-left: 14px; list-style: circle">总容量：{{ i.total }} MB</li>
+                <li style="margin-left: 14px; list-style: circle">已使用：{{ i.used }} MB | {{ i.percent }} %</li>
+                <li style="margin-left: 14px; list-style: circle">可用：{{ i.free }} MB</li>
+            {% endfor %}
+        </ul>
     </div>
 
     <div id="NETWORK">
-        <p style="font-weight: bold; color: green">-- NETWORK --</p>
-
+        <p>-- NETWORK --</p>
+        <ul>
+            {% for i in network_info %}
+                <li>网络适配器：{{ i }}</li>
+            {% endfor %}
+        </ul>
     </div>
+
     <script>
         function goGitHub() {
             window.location.href='https://github.com/babyNEKO/EasyServerMonitor';
