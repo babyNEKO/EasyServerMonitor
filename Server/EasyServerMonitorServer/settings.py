@@ -55,7 +55,7 @@ ROOT_URLCONF = 'EasyServerMonitorServer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'ESM_Server/../ESM_Server/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -125,3 +125,5 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+LOGIN_URL = '/login/'

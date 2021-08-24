@@ -1,3 +1,4 @@
 from django.contrib import admin
+from ESM_Server.models import ESM
 
-# Register your models here.
+admin.site.register(ESM)
