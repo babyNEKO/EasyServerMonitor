@@ -15,25 +15,71 @@
                 <span class="fs-4"><i class="bi bi-terminal"></i> Easy Server Monitor :: Dashboard</span>
             </a>
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link" aria-current="page">Home</a></li>
-                <li class="nav-item"><a href="./admin/ESM_Server/" class="nav-link">Setting</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-                <li class="nav-item"><a href="https://github.com/babyNEKO/EasyServerMonitor" class="nav-link">About</a></li>
                 {% if request.user.is_authenticated %}
-                    <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                    <li class="nav-item"><a href="./admin/ESM_Server/" class="nav-link">Setting <i class="bi bi-sliders"></i></a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">HostList <i class="bi bi-list-ol"></i></a></li>
+                    <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout <i class="bi bi-door-closed"></i></a></li>
                 {% else %}
-                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="{% url 'login' %}" class="nav-link link-danger">Login <i class="bi bi-door-open"></i></a></li>
                 {% endif %}
             </ul>
         </header>
     </div>
 
-
-    <footer class="mt-auto py-3 bg-light footer" style="left: 0; position: absolute; bottom: 0; width: 100%">
-        <div class="container">
-            <span class="text-muted">&copy;2021 Easy Server Monitor</span>
+    <div class="container">
+        <div class="row mb-3">
+        {% if host_info %}
+                {% for i in host_info %}
+                    {% if i.status == 'ClientConnectionError' %}
+                        <div class="col-4">
+                            <div class="card border-dark mb-3">
+                                <div class="card-header">Offline {{ i.ip_address }}</div>
+                                <div class="card-body text-danger">
+                                    <h5 class="text-center">Client Connection Error <i class="bi bi-exclamation-octagon"></i></h5>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="http://{{ i.ip_address }}:{{ i.client_port }}/" class="card-link link-danger">View all information</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-4">
+                            <div class="card border-dark mb-3">
+                                <div class="card-header"><a href="http://{{ i.ip_address }}:{{ i.client_port }}/">Online {{ i.ip_address }}</a></div>
+                                <div class="card-body text-dark">
+                                    <p class="card-text"><strong>CPU Load</strong> {{ i.cpuload }}</p>
+                                    <p class="card-text"><strong>RAM Load</strong> {{ i.ramload }} %</p>
+                                    <p class="card-text"><strong>SYS Uptime</strong> {{ i.uptime }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <span>Refresh: {{ i.refresh_time }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        {% else %}
+            <div class="container text-center">
+                <p class="fw-bold">No Data To View.</p>
+                <button type="button" class="btn btn-outline-primary" onclick="window.location.href='./admin/ESM_Server/esm/add/'">Add Host</button>
+            </div>
+        {% endif %}
         </div>
-    </footer>
+    </div>
+
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top align-bottom">
+            <div class="col-md-4 d-flex align-items-center">
+                <span class="text-muted">&copy; 2021 Easy Server Monitor; All rights reserved.</span>
+            </div>
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <li class="ms-3">
+                    <a class="text-muted" href="https://github.com/babyNEKO/EasyServerMonitor"><i class="bi bi-github"></i></a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 </body>
 </html>

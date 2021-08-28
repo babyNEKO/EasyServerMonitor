@@ -16,14 +16,13 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from ESM_Server.views import add_host, index, view_host, user_logout,user_login
+from ESM_Server.views import index, host_list, user_logout,user_login
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('add-host/', login_required(add_host), name='add_host'),
-    path('view-host/<str:ip_address>/', login_required(view_host), name='view_host'),
+    path('view-host/', login_required(host_list), name='view_host'),
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
 ]

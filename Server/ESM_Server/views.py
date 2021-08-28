@@ -3,23 +3,37 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from models import ESM
+from .models import ESM
+from django.views.decorators.http import require_http_methods
+from .Plugin.get_host_info import get_info
 
 
-# Create your views here.
+@require_http_methods(['GET'])
 def index(request):
-    show_host = ESM.objects.all()
-    return render(request=request, template_name='index.html')
+    pin_host = ESM.objects.all().filter(pin_to_index__exact=True)
+    if pin_host.exists() is not False:
+        context = {
+            'index_host': pin_host,
+            'host_info': [],
+        }
+        for i in pin_host:
+            context['host_info'].append(get_info(ip_address=i.ip_address, port=i.client_port))
+        return render(request=request, template_name='index.html', context=context)
+    else:
+        get_all_host = ESM.objects.all()
+        context = {
+            'index_host': get_all_host,
+        }
+        return render(request=request, template_name='index.html', context=context)
 
 
 @login_required
-def add_host(request, ip_address=None):
-    return render(request=request, template_name='add_host.html')
-
-
-@login_required
-def view_host(request, ip_address):
-    return render(request=request, template_name='view_host.html')
+def host_list(request):
+    all_host = ESM.objects.all()
+    context = {
+        'all_host': all_host,
+    }
+    return render(request=request, template_name='host_list.html', context=context)
 
 
 def user_login(request):
