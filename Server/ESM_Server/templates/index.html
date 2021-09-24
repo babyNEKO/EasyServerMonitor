@@ -33,7 +33,7 @@
                     {% if i.status == 'ClientConnectionError' %}
                         <div class="col-4">
                             <div class="card border-dark mb-3">
-                                <div class="card-header">Offline {{ i.ip_address }}</div>
+                                <div class="card-header">OFFLIEN {{ i.ip_address }}</div>
                                 <div class="card-body text-danger">
                                     <h5 class="text-center">Client Connection Error <i class="bi bi-exclamation-octagon"></i></h5>
                                 </div>
@@ -45,7 +45,7 @@
                         {% else %}
                         <div class="col-4">
                             <div class="card border-dark mb-3">
-                                <div class="card-header"><a href="http://{{ i.ip_address }}:{{ i.client_port }}/">Online {{ i.ip_address }}</a></div>
+                                <div class="card-header">Online <a href="http://{{ i.ip_address }}:{{ i.client_port }}/">{{ i.ip_address }}</a></div>
                                 <div class="card-body text-dark">
                                     <p class="card-text"><strong>CPU Load</strong> {{ i.cpuload }}</p>
                                     <p class="card-text"><strong>RAM Load</strong> {{ i.ramload }} %</p>
