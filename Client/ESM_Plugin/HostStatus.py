@@ -1,9 +1,12 @@
+from psutil import NoSuchProcess
 from psutil import virtual_memory
 from psutil import disk_usage, disk_partitions
 from psutil import cpu_count, cpu_percent
 from datetime import datetime
 from psutil import boot_time
 from psutil import net_if_stats, net_if_addrs
+from psutil import win_service_get
+from psutil import users
 
 
 # doc:
@@ -56,16 +59,44 @@ def disk_info():
 def network_info():
     host_network_info = []
 
+    for i, j in net_if_stats().items():
+        for ii, jj in net_if_addrs().items():
+            if i in ii:
+                host_network_info.append({
+                    'network_adapter': i,
+                    'status': j.isup,
+                    'speed': str(j.speed) + 'Mbps',
+                    'ipaddr_4': jj[1].address,
+                    'netmask_4': jj[1].netmask,
+                })
+
     return host_network_info
 
 
 def services_info():
-    pass
+    host_service_info = []
+    services_list = ('Dhcp', 'SessionEnv', 'EventLog', 'EFS', 'lmhosts')
+    services_list = sorted(services_list)
+
+    for i in services_list:
+        try:
+            host_service_info.append(win_service_get(i).as_dict())
+        except NoSuchProcess as NSP:
+            print(NSP)
+
+    return host_service_info
 
 
 def system_info():
-    host_system_info = {
-        'boot_time': datetime.fromtimestamp(boot_time()).strftime('%Y-%m-%d %H:%M:%S'),
-    }
-    return host_system_info
+    host_system_info = [str(datetime.fromtimestamp(boot_time()).strftime('%Y-%m-%d %H:%M:%S')),
+                        str(datetime.now() - datetime.fromtimestamp(boot_time()))]
+    for i in users():
+        host_system_info.append({
+            'username': i.name,
+            'host': i.host,
+            'pid': i.pid,
+            'terminal': i.terminal,
+            'started': str(datetime.fromtimestamp(i.started).strftime('%Y-%m-%d %H:%M:%S')),
+        })
 
+    return host_system_info

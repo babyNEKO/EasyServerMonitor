@@ -2,13 +2,14 @@
 <html lang="zh">
 
 <head>
+    <link rel="icon" href="{{ url_for('static', filename='stack.svg') }}">
     <meta charset="UTF-8">
     <title>~ ESM Client</title>
     <style>
         h1{
             font-style: italic;
         }
-        #SYS p, #CPU p, #RAM p, #DISK p, #NETWORK p{
+        #SYS p, #CPU p, #RAM p, #DISK p, #NETWORK p, #SERVICES p{
             font-weight: bold;
             color: green;
         }
@@ -24,7 +25,10 @@
     <div id="SYS">
         <p>-- SYSTEM --</p>
         <ul>
-            <li>{{ 'Boot Time ' ~ system_info.boot_time }}</li>
+            <li>{{ 'Boot Time: ' ~ system_info.0 }} | 正常运行时间 {{ system_info.1 }}</li>
+            {% for i in system_info[2:] %}
+                <li>Login Users: {{ i.username }} | Host: {{ i.host }} | Terminal: {{ i.terminal }} | Pid: {{ i.pid }} | Started: {{ i.started }}</li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -56,7 +60,7 @@
                 <li style="margin-left: 14px; list-style: circle">文件系统：{{ i.fstype }}</li>
                 <li style="margin-left: 14px; list-style: circle">总容量：{{ i.total }} MB</li>
                 <li style="margin-left: 14px; list-style: circle">已使用：{{ i.used }} MB | {{ i.percent }} %</li>
-                <li style="margin-left: 14px; list-style: circle">可用：{{ i.free }} MB</li>
+                <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">可用：{{ i.free }} MB</li>
             {% endfor %}
         </ul>
     </div>
@@ -65,7 +69,35 @@
         <p>-- NETWORK --</p>
         <ul>
             {% for i in network_info %}
-                <li>网络适配器：{{ i }}</li>
+                <li>网络适配器：{{ i.network_adapter }}</li>
+{#                <li style="margin-left: 14px; list-style: circle">状态：{{ i.status }}</li>#}
+                {% if i.status == True %}
+                    <li style="margin-left: 14px; list-style: circle">状态：<span style="color: green">Up</span></li>
+                {% elif i.status == False %}
+                    <li style="margin-left: 14px; list-style: circle">状态：<span style="color: red">Down</span></li>
+                {% endif %}
+                <li style="margin-left: 14px; list-style: circle">链路速率：{{ i.speed }}</li>
+                <li style="margin-left: 14px; list-style: circle">IPv4 Address {{ i.ipaddr_4 }}</li>
+                <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">IPv4 Netmask {{ i.netmask_4 }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="SERVICES">
+        <P>-- SERVICES --</P>
+        <ul>
+            {% for i in services_info %}
+                <li>{{ i.display_name }}</li>
+                {% if i.status == 'stopped' %}
+                    <li style="margin-left: 14px; list-style: circle">状态：<span style="color: red;">{{ i.status | title }}</span></li>
+                {% elif i.status == 'running' %}
+                    <li style="margin-left: 14px; list-style: circle">状态：<span style="color: green;">{{ i.status | title }}</span></li>
+                {% endif %}
+                <li style="margin-left: 14px; list-style: circle">Name: {{ i.name }}</li>
+                <li style="margin-left: 14px; list-style: circle">PID: {{ i.pid }}</li>
+                <li style="margin-left: 14px; list-style: circle">UserName: {{ i.username }}</li>
+                <li style="margin-left: 14px; list-style: circle">启动类型：{{ i.start_type | title }}</li>
+                <li style="margin-left: 14px; list-style: circle">BinPath: "{{ i.binpath }}"</li>
+                <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">描述：{{ i.description }}</li>
             {% endfor %}
         </ul>
     </div>
