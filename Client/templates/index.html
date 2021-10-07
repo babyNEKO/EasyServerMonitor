@@ -35,7 +35,7 @@
     <div id="CPU">
         <p>-- CPU --</p>
         <ul>
-            <li>{{ '内核：' ~ cpu_info.CPU_core }} | {{ '逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
+            <li>{{ '物理内核：' ~ cpu_info.CPU_core }} | {{ '逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
             <li>{{ 'CPU Load ' ~ cpu_info.CPU_load }}</li>
         </ul>
     </div>
@@ -100,6 +100,26 @@
                 <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">描述：{{ i.description }}</li>
             {% endfor %}
         </ul>
+    </div>
+
+    <div>
+        <hr>
+        <p>SEND FILE TO HOST</p>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Send It</button>
+        </form>
+        {% if check_upload.lv == 0%}
+            <p style="color: red">{{ check_upload.info }}</p>
+        {% elif check_upload.lv == 1 %}
+            <p style="color: orange">{{ check_upload.info }}</p>
+        {% elif check_upload.lv == 2 %}
+            {% for i in check_upload.info %}
+                <ul>
+                    <li>{{ i }}</li>
+                </ul>
+            {% endfor %}
+        {% endif %}
     </div>
 
     <script>
