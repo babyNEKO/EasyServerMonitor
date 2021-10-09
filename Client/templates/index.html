@@ -3,6 +3,29 @@
 
 <head>
     <link rel="icon" href="{{ url_for('static', filename='stack.svg') }}">
+    <script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
+    <script>
+        $(document).ready(function (){
+            $("#RAM-title").click(function () {
+                $("#RAM-info").fadeToggle();
+            })
+            $("#DISK-title").click(function () {
+                $("#DISK-info").fadeToggle();
+            })
+            $("#NETWORK-title").click(function () {
+                $("#NETWORK-info").fadeToggle();
+            })
+            $("#SERVICES-title").click(function () {
+                $("#SERVICES-info").fadeToggle();
+            })
+            $("#SYS-title").click(function () {
+                $("#SYS-info").fadeToggle();
+            })
+            $("#CPU-title").click(function () {
+                $("#CPU-info").fadeToggle();
+            })
+        })
+    </script>
     <meta charset="UTF-8">
     <title>~ ESM Client</title>
     <style>
@@ -23,8 +46,8 @@
     </div>
 
     <div id="SYS">
-        <p>-- SYSTEM --</p>
-        <ul>
+        <p id="SYS-title">-- SYSTEM --</p>
+        <ul id="SYS-info">
             <li>{{ 'Boot Time: ' ~ system_info.0 }} | 正常运行时间 {{ system_info.1 }}</li>
             {% for i in system_info[2:] %}
                 <li>Login Users: {{ i.username }} | Host: {{ i.host }} | Terminal: {{ i.terminal }} | Pid: {{ i.pid }} | Started: {{ i.started }}</li>
@@ -33,16 +56,16 @@
     </div>
 
     <div id="CPU">
-        <p>-- CPU --</p>
-        <ul>
+        <p id="CPU-title">-- CPU --</p>
+        <ul id="CPU-info">
             <li>{{ '物理内核：' ~ cpu_info.CPU_core }} | {{ '逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
             <li>{{ 'CPU Load ' ~ cpu_info.CPU_load }}</li>
         </ul>
     </div>
 
     <div id="RAM">
-        <p>-- RAM --</p>
-        <ul>
+        <p id="RAM-title">-- RAM --</p>
+        <ul id="RAM-info" hidden="hidden">
             <li>{{ 'Total ' ~ ram_info.RAM_total ~ ' MB' }}</li>
             <li>{{ 'Used ' ~ ram_info.RAM_used ~ ' MB' }}</li>
             <li>{{ 'Free ' ~ ram_info.RAM_free ~ ' MB' }}</li>
@@ -52,8 +75,8 @@
     </div>
 
     <div id="DISK">
-        <p>-- DISK --</p>
-        <ul>
+        <p id="DISK-title">-- DISK --</p>
+        <ul id="DISK-info" hidden="hidden">
             {% for i in disk_info %}
                 <li>磁盘：{{ i.device }}</li>
                 <li style="margin-left: 14px; list-style: circle">挂载点：{{ i.mnt }}</li>
@@ -66,8 +89,8 @@
     </div>
 
     <div id="NETWORK">
-        <p>-- NETWORK --</p>
-        <ul>
+        <p id="NETWORK-title">-- NETWORK --</p>
+        <ul id="NETWORK-info" hidden="hidden">
             {% for i in network_info %}
                 <li>网络适配器：{{ i.network_adapter }}</li>
 {#                <li style="margin-left: 14px; list-style: circle">状态：{{ i.status }}</li>#}
@@ -83,8 +106,8 @@
         </ul>
     </div>
     <div id="SERVICES">
-        <P>-- SERVICES --</P>
-        <ul>
+        <p id="SERVICES-title">-- SERVICES --</p>
+        <ul id="SERVICES-info" hidden="hidden">
             {% for i in services_info %}
                 <li>{{ i.display_name }}</li>
                 {% if i.status == 'stopped' %}
@@ -102,12 +125,12 @@
         </ul>
     </div>
 
-    <div>
+    <div id="SENDFILE">
         <hr>
-        <p>SEND FILE TO HOST</p>
+        <p>File Distribution</p>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
-            <button type="submit">Send It</button>
+            <button type="submit">Acknowledge</button>
         </form>
         {% if check_upload.lv == 0%}
             <p style="color: red">{{ check_upload.info }}</p>
