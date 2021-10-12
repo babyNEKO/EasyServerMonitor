@@ -16,8 +16,8 @@
             </a>
             <ul class="nav nav-pills">
                 {% if request.user.is_authenticated %}
-                    <li class="nav-item"><a href="./admin/ESM_Server/" class="nav-link">Setting <i class="bi bi-sliders"></i></a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">HostList <i class="bi bi-list-ol"></i></a></li>
+                    <li class="nav-item"><a href="./admin/ESM_Server/esm/" class="nav-link">Setting <i class="bi bi-sliders"></i></a></li>
+                    <li class="nav-item"><a href="{% url 'host_list' %}" class="nav-link">HostList <i class="bi bi-list-ol"></i></a></li>
                     <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout <i class="bi bi-door-closed"></i></a></li>
                 {% else %}
                     <li class="nav-item"><a href="{% url 'login' %}" class="nav-link link-danger">Login <i class="bi bi-door-open"></i></a></li>
@@ -70,7 +70,7 @@
     <div class="container">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top align-bottom">
             <div class="col-md-4 d-flex align-items-center">
-                <span class="text-muted">&copy; 2021 Easy Server Monitor; All rights reserved.</span>
+                <span class="text-muted" onclick="window.location.href='https://github.com/babyNEKO/EasyServerMonitor';">&copy; 2021 Easy Server Monitor; All rights reserved.</span>
             </div>
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
                 <li class="ms-3">
