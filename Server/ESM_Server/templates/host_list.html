@@ -31,6 +31,7 @@
                     <th scope="col">IP Address</th>
                     <th scope="col">System Uptime</th>
                     <th scope="col">Is Online</th>
+                    <th scope="col">Pin To Index</th>
                     <th scope="col">Send File</th>
                 </tr>
             </thead>
@@ -41,6 +42,11 @@
                         <td>{{ i.ip_address }}</td>
                         <td></td>
                         <td></td>
+                        {% if i.pin_to_index == True %}
+                            <td class="text-success">{{ i.pin_to_index }}</td>
+                            {% elif i.pin_to_index == False %}
+                                <td class="text-warning">{{ i.pin_to_index }}</td>
+                        {% endif %}
                         <td></td>
                     </tr>
                 {% endfor %}

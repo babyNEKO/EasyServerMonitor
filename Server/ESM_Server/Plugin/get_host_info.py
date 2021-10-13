@@ -12,7 +12,7 @@ def get_info(ip_address, port=5000):
         'ramload': '',
         'uptime': '',
         'status': '',
-        'refresh_time': str(ctime())
+        'refresh_time': '',
     }
 
     try:
@@ -22,6 +22,7 @@ def get_info(ip_address, port=5000):
         context['cpuload'] = response.json()['CPU']['CPU_load']
         context['ramload'] = response.json()['RAM']['RAM_percent']
         context['uptime'] = response.json()['SYSTEM'][1]
+        context['refresh_time'] = response.json()['Refresh_time']
 
         return context
     except requests.exceptions.ConnectionError:
@@ -30,5 +31,7 @@ def get_info(ip_address, port=5000):
     except requests.exceptions.Timeout:
         context['status'] = 'ClientConnectionError'
         return context
-
+    except KeyError:
+        context['status'] = 'ClientAPIError'
+        return context
 # 2021年8月24日

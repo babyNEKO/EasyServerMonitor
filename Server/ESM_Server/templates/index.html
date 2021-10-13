@@ -42,6 +42,18 @@
                                 </div>
                             </div>
                         </div>
+                        {% elif i.status == 'ClientAPIError' %}
+                            <div class="col-4">
+                                <div class="card border-dark mb-3">
+                                    <div class="card-header">OFFLIEN {{ i.ip_address }}</div>
+                                    <div class="card-body text-warning">
+                                        <h5 class="text-center">Client API Error <i class="bi bi-question-octagon"></i></h5>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="https://github.com/babyNEKO/EasyServerMonitor" class="card-link link-warning">Check for updates.</a>
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
                         <div class="col-4">
                             <div class="card border-dark mb-3">

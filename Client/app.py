@@ -3,6 +3,7 @@ from ESM_Plugin.HostStatus import cpu_info, memory_info, disk_info, system_info,
 from os import listdir, mkdir
 from os.path import exists, join as os_path_join
 from werkzeug.utils import secure_filename
+from time import ctime
 
 upload_folder = 'c:\\ESM_Client_Upload\\'
 allowed_extensions = {'zip', 'rar', '7z', 'tar'}
@@ -52,6 +53,7 @@ def get_all_info():
         'NETWORK': network_info(),
         'SYSTEM': system_info(),
         'SERVICES': services_info(),
+        'Refresh_time': str(ctime()),
     }
 
     return jsonify(all_info)

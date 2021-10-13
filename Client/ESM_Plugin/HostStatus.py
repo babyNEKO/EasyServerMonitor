@@ -41,6 +41,7 @@ def disk_info():
 
     host_disk_info = []
     count = 0
+
     for j in disk_symbol:
         host_disk_info.append({
             'device': j,
@@ -52,7 +53,6 @@ def disk_info():
             'percent': disk_usage(path=j).percent,
         })
         count += 1
-
     return host_disk_info
 
 
