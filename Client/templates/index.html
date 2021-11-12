@@ -2,6 +2,8 @@
 <html lang="zh">
 
 <head>
+    <meta charset="UTF-8">
+    <title>~ ESM Client</title>
     <link rel="icon" href="{{ url_for('static', filename='stack.svg') }}">
     <script src="{{ url_for('static', filename='jquery-3.6.0.min.js') }}"></script>
     <script>
@@ -26,8 +28,6 @@
             })
         })
     </script>
-    <meta charset="UTF-8">
-    <title>~ ESM Client</title>
     <style>
         h1{
             font-style: italic;
@@ -48,9 +48,9 @@
     <div id="SYS">
         <p id="SYS-title">-- SYSTEM --</p>
         <ul id="SYS-info">
-            <li>{{ 'Boot Time: ' ~ system_info.0 }} | 正常运行时间 {{ system_info.1 }}</li>
+            <li>{{ 'Boot Time: ' ~ system_info.0 ~ ' | Up-time: ' ~ system_info.1 }}</li>
             {% for i in system_info[2:] %}
-                <li>Login Users: {{ i.username }} | Host: {{ i.host }} | Terminal: {{ i.terminal }} | Pid: {{ i.pid }} | Started: {{ i.started }}</li>
+                <li>{{ 'Login Users: ' ~ i.username ~ ' | Host: ' ~ i.host ~ ' | Terminal: ' ~ i.terminal ~ ' | Pid: ' ~ i.pid ~ ' | Started: ' ~ i.started }}</li>
             {% endfor %}
         </ul>
     </div>
@@ -58,7 +58,7 @@
     <div id="CPU">
         <p id="CPU-title">-- CPU --</p>
         <ul id="CPU-info">
-            <li>{{ '物理内核：' ~ cpu_info.CPU_core }} | {{ '逻辑处理器：' ~ cpu_info.CPU_logical }}</li>
+            <li>{{ 'Physical Kernel: ' ~ cpu_info.CPU_core ~ ' | ' ~ 'Logic Processor: ' ~ cpu_info.CPU_logical }}</li>
             <li>{{ 'CPU Load ' ~ cpu_info.CPU_load }}</li>
         </ul>
     </div>
@@ -66,11 +66,11 @@
     <div id="RAM">
         <p id="RAM-title">-- RAM --</p>
         <ul id="RAM-info" hidden="hidden">
-            <li>{{ 'Total ' ~ ram_info.RAM_total ~ ' MB' }}</li>
-            <li>{{ 'Used ' ~ ram_info.RAM_used ~ ' MB' }}</li>
-            <li>{{ 'Free ' ~ ram_info.RAM_free ~ ' MB' }}</li>
-            <li>{{ 'Available ' ~ ram_info.RAM_available ~ ' MB' }}</li>
-            <li>{{ 'Percent ' ~ ram_info.RAM_percent ~ ' %' }}</li>
+            <li>{{ 'Total: ' ~ ram_info.RAM_total ~ ' MB' }}</li>
+            <li>{{ 'Used: ' ~ ram_info.RAM_used ~ ' MB' }}</li>
+            <li>{{ 'Free: ' ~ ram_info.RAM_free ~ ' MB' }}</li>
+            <li>{{ 'Available: ' ~ ram_info.RAM_available ~ ' MB' }}</li>
+            <li>{{ 'Percent: ' ~ ram_info.RAM_percent ~ ' %' }}</li>
         </ul>
     </div>
 
@@ -93,7 +93,6 @@
         <ul id="NETWORK-info" hidden="hidden">
             {% for i in network_info %}
                 <li>网络适配器：{{ i.network_adapter }}</li>
-{#                <li style="margin-left: 14px; list-style: circle">状态：{{ i.status }}</li>#}
                 {% if i.status == True %}
                     <li style="margin-left: 14px; list-style: circle">状态：<span style="color: green">Up</span></li>
                 {% elif i.status == False %}
@@ -116,21 +115,33 @@
                     <li style="margin-left: 14px; list-style: circle">状态：<span style="color: green;">{{ i.status | title }}</span></li>
                 {% endif %}
                 <li style="margin-left: 14px; list-style: circle">Name: {{ i.name }}</li>
-                <li style="margin-left: 14px; list-style: circle">PID: {{ i.pid }}</li>
+                {% if i.pid != None %}
+                    <li style="margin-left: 14px; list-style: circle">PID: {{ i.pid }}</li>
+                {% endif %}
                 <li style="margin-left: 14px; list-style: circle">UserName: {{ i.username }}</li>
-                <li style="margin-left: 14px; list-style: circle">启动类型：{{ i.start_type | title }}</li>
+                {% if i.start_type == 'automatic' %}
+                    <li style="margin-left: 14px; list-style: circle">启动类型：<span style="color: green">{{ i.start_type | title }}</span></li>
+                {% elif i.start_type == 'manual' %}
+                    <li style="margin-left: 14px; list-style: circle">启动类型：<span style="color: orange">{{ i.start_type | title }}</span></li>
+                {% elif i.start_type == 'disabled' %}
+                    <li style="margin-left: 14px; list-style: circle">启动类型：<span style="color: red">{{ i.start_type | title }}</span></li>
+                {% else %}
+                    <li style="margin-left: 14px; list-style: circle">启动类型：{{ i.start_type | title }}</li>
+                {% endif %}
                 <li style="margin-left: 14px; list-style: circle">BinPath: "{{ i.binpath }}"</li>
-                <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">描述：{{ i.description }}</li>
+                {% if i.description %}
+                    <li style="margin-left: 14px; list-style: circle; margin-bottom: 8px">描述：{{ i.description }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>
 
     <div id="SENDFILE">
         <hr>
-        <p>File Distribution</p>
+        <p>Send File</p>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
-            <button type="submit">Acknowledge</button>
+            <button type="submit">Submit</button>
         </form>
         {% if check_upload.lv == 0%}
             <p style="color: red">{{ check_upload.info }}</p>

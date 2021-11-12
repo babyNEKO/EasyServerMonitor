@@ -63,3 +63,7 @@ if __name__ == '__main__':
     # test server, all IP address access, port 5000
     ESM_Client.debug = True
     ESM_Client.run(host='0.0.0.0')
+
+# 2021年11月10日-0.1.9
+#   -【下个版本新增】SQLite数据库（用于保存监控历史记录，后期用于图表呈现）
+#   -模板（index.html）结果呈现优化
